@@ -96,6 +96,10 @@ public class BaseKey {
     * 回答
     * */
     public static final String OPERATION_ANSWER = "ANSWER";
+    /*
+    * 播放
+    * */
+    public static final String OPERATION_PLAY = "PLAY";
 
    //TODO(服务)
 

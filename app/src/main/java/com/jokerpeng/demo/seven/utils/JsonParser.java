@@ -14,6 +14,14 @@ import com.jokerpeng.demo.seven.bean.FlightBean;
 import com.jokerpeng.demo.seven.bean.FlowerBean;
 import com.jokerpeng.demo.seven.bean.GiftBean;
 import com.jokerpeng.demo.seven.bean.HotelBean;
+import com.jokerpeng.demo.seven.bean.MapBean;
+import com.jokerpeng.demo.seven.bean.MessageBean;
+import com.jokerpeng.demo.seven.bean.MusicBean;
+import com.jokerpeng.demo.seven.bean.OpenQABean;
+import com.jokerpeng.demo.seven.bean.PM25Bean;
+import com.jokerpeng.demo.seven.bean.RadioBean;
+import com.jokerpeng.demo.seven.bean.TelephoneBean;
+import com.jokerpeng.demo.seven.bean.WeatherBean;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -196,22 +204,42 @@ public class JsonParser {
 				}
 				break;
 			case BaseKey.SERVICE_MAP:
+				MapBean mapBean = gson.fromJson(json,MapBean.class);
+				if(BaseKey.OPERATION_POSITION.equals(baseBean.getOperation())){
 
+				}else if(BaseKey.OPERATION_ROUTE.equals(baseBean.getOperation())){
+
+				}
 				break;
 			case BaseKey.SERVICE_MESSAGE:
+				MessageBean messageBean = gson.fromJson(json,MessageBean.class);
+				if(BaseKey.OPERATION_SEND.equals(baseBean.getOperation())){
 
+				}
 				break;
 			case BaseKey.SERVICE_MUSIC:
+				MusicBean musicBean = gson.fromJson(json,MusicBean.class);
+				if(BaseKey.OPERATION_PLAY.equals(baseBean.getOperation())){
 
+				}
 				break;
-			case BaseKey.SERVICE_OPEN_QA:
+			case BaseKey.SERVICE_OPEN_QA://情绪问答,问候
+				OpenQABean openQABean = gson.fromJson(json,OpenQABean.class);
+				if(BaseKey.OPERATION_ANSWER.equals(baseBean.getOperation())){
 
+				}
 				break;
 			case BaseKey.SERVICE_PM25:
+				PM25Bean pm25Bean = gson.fromJson(json,PM25Bean.class);
+				if(BaseKey.OPERATION_QUERY.equals(baseBean.getOperation())){
 
+				}
 				break;
 			case BaseKey.SERVICE_RADIO:
+				RadioBean radioBean = gson.fromJson(json,RadioBean.class);
+				if(BaseKey.OPERATION_LAUNCH.equals(baseBean.getOperation())){
 
+				}
 				break;
 			case BaseKey.SERVICE_RESTAURANT:
 
@@ -226,7 +254,10 @@ public class JsonParser {
 
 				break;
 			case BaseKey.SERVICE_TELEPHONE:
+				TelephoneBean telephoneBean = gson.fromJson(json,TelephoneBean.class);
+				if(BaseKey.OPERATION_CALL.equals(baseBean.getOperation())){
 
+				}
 				break;
 			case BaseKey.SERVICE_TRAIN:
 
@@ -244,7 +275,10 @@ public class JsonParser {
 
 				break;
 			case BaseKey.SERVICE_WEATHER:
+				WeatherBean weatherBean = gson.fromJson(json,WeatherBean.class);
+				if(BaseKey.OPERATION_QUERY.equals(baseBean.getOperation())){
 
+				}
 				break;
 			case BaseKey.SERVICE_WEBSEARCH:
 
