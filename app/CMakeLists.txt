@@ -10,6 +10,8 @@ cmake_minimum_required(VERSION 3.4.1)
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
 
+set(ProjectRoot  ${CMAKE_SOURCE_DIR}/libs)
+
 add_library( # Sets the name of the library.
              native-lib
 
@@ -18,6 +20,8 @@ add_library( # Sets the name of the library.
 
              # Provides a relative path to your source file(s).
              src/main/cpp/native-lib.cpp )
+
+add_library(libmsc SHARED IMPORTED)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -35,6 +39,16 @@ find_library( # Sets the name of the path variable.
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
+
+set_target_properties(
+                        # 制定你的目标,当你制定了目标 必须在add_library里面添加命名空间,才能知道你有这个lib
+                       libmsc
+
+                        #title的类型 制定你是import别人的so包
+                        PROPERTIES IMPORTED_LOCATION
+
+                        #导入你已经存在的静态so库,下面的绝对路径
+                        ${ProjectRoot}/${ANDROID_ABI}/libmsc.so)
 
 target_link_libraries( # Specifies the target library.
                        native-lib

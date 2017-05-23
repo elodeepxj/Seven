@@ -3,26 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
  >
-    <Button
-        android:id="@+id/btn_dictation"
-        android:layout_width="88dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="听写"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp" />
-    <Button
-        android:id="@+id/btn_understander"
-        android:layout_width="88dp"
-        android:layout_height="wrap_content"
-        android:text="理解"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp" />
-    <Button
-        android:id="@+id/btn_speech"
-        android:layout_width="88dp"
-        android:layout_height="wrap_content"
-        android:text="说话"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp" />
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_dictation"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:text="听写"
+            tools:layout_editor_absoluteY="0dp"
+            tools:layout_editor_absoluteX="8dp" />
+        <Button
+            android:id="@+id/btn_understander"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:text="理解"
+            tools:layout_editor_absoluteY="0dp"
+            tools:layout_editor_absoluteX="8dp" />
+        <Button
+            android:id="@+id/btn_speech"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:text="说话"
+            tools:layout_editor_absoluteY="0dp"
+            tools:layout_editor_absoluteX="8dp" />
+    </LinearLayout>
+
 </LinearLayout>

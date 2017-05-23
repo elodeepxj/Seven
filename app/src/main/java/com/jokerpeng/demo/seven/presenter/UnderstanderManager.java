@@ -3,6 +3,7 @@ package com.jokerpeng.demo.seven.presenter;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
@@ -49,6 +50,10 @@ public class UnderstanderManager {
     }
 
     public void setParameter(){
+        if(null == speechUnderstander){
+            Toast.makeText(mContext,"understanderManager创建对象失败",Toast.LENGTH_LONG).show();
+            return;
+        }
         speechUnderstander.setParameter(SpeechConstant.LANGUAGE, "en_us");
         speechUnderstander.setParameter(SpeechConstant.VAD_BOS, "4000");
         speechUnderstander.setParameter(SpeechConstant.VAD_EOS, "1000");
@@ -88,7 +93,7 @@ public class UnderstanderManager {
             voiceUnderstanderListener.initFail();
             return;
         }
-        speechUnderstander.startUnderstanding(new SpeechUnderstanderListener() {
+        int i = speechUnderstander.startUnderstanding(new SpeechUnderstanderListener() {
             @Override
             public void onVolumeChanged(int i, byte[] bytes) {
                 voiceUnderstanderListener.volumeChanged(i);
@@ -107,7 +112,7 @@ public class UnderstanderManager {
             @Override
             public void onResult(UnderstanderResult understanderResult) {
                 if(null != understanderResult){
-                    if(!TextUtils.isEmpty(understanderResult.getResultString())){
+                    if(!TextUtils.isEmpty(understanderResult.getResultString())){//内容不为空
                         voiceUnderstanderListener.success(understanderResult.getResultString());
                     }else{
                         voiceUnderstanderListener.empty();
@@ -127,6 +132,9 @@ public class UnderstanderManager {
 
             }
         });
+        if(i != 0){//语义理解失败
+
+        }
     }
     /*
     * 语音理解回调

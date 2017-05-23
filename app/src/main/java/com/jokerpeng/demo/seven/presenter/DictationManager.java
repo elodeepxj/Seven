@@ -2,6 +2,7 @@ package com.jokerpeng.demo.seven.presenter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
@@ -35,7 +36,7 @@ public class DictationManager {
     }
 
     public void init(Context context){
-        mSpeechRecognizer = SpeechRecognizer.createRecognizer(context,null);
+        mSpeechRecognizer = SpeechRecognizer.createRecognizer(context, null);
         mRecognizerDialog = new RecognizerDialog(context,null);
         mResult = new LinkedHashMap<>();
     }
@@ -61,7 +62,6 @@ public class DictationManager {
                             e.printStackTrace();
                         }
                         mResult.put(sn,text);
-
                         mResultBuffer = new StringBuffer();
                         for (String key : mResult.keySet()) {
                             mResultBuffer.append(mResult.get(key));
@@ -87,6 +87,10 @@ public class DictationManager {
     * 设置参数
     * */
     public void setParameter() {
+        if(null == mSpeechRecognizer){
+            Toast.makeText(mContext,"dictationManager创建对象失败",Toast.LENGTH_LONG).show();
+            return;
+        }
         mSpeechRecognizer.setParameter(SpeechConstant.PARAMS,null);
         mSpeechRecognizer.setParameter(SpeechConstant.ENGINE_TYPE,SpeechConstant.TYPE_CLOUD);
         mSpeechRecognizer.setParameter(SpeechConstant.RESULT_TYPE,"json");
