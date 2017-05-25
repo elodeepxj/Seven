@@ -20,8 +20,19 @@ import com.jokerpeng.demo.seven.bean.MusicBean;
 import com.jokerpeng.demo.seven.bean.OpenQABean;
 import com.jokerpeng.demo.seven.bean.PM25Bean;
 import com.jokerpeng.demo.seven.bean.RadioBean;
+import com.jokerpeng.demo.seven.bean.RestaurantBean;
+import com.jokerpeng.demo.seven.bean.ScheduleBean;
+import com.jokerpeng.demo.seven.bean.ShortRentBean;
+import com.jokerpeng.demo.seven.bean.StockBean;
+import com.jokerpeng.demo.seven.bean.TVBean;
 import com.jokerpeng.demo.seven.bean.TelephoneBean;
+import com.jokerpeng.demo.seven.bean.TrainBean;
+import com.jokerpeng.demo.seven.bean.TranslationBean;
+import com.jokerpeng.demo.seven.bean.VideoBean;
 import com.jokerpeng.demo.seven.bean.WeatherBean;
+import com.jokerpeng.demo.seven.bean.WebSearchBean;
+import com.jokerpeng.demo.seven.bean.WebSiteBean;
+import com.jokerpeng.demo.seven.bean.WeiboBean;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -119,12 +130,13 @@ public class JsonParser {
 	/*
 	* 语义理解解析
 	* */
-	public static void parseUnderstanderResult(String json){
+	public static String parseUnderstanderResult(String json){
 		Gson gson = new Gson();
 		BaseBean baseBean = gson.fromJson(json, BaseBean.class);
 		if(!BaseKey.SUCCESS_CODE.equals(baseBean.getRc())){
-			return ;
+			return null;
 		}
+		String result = null;
 		switch (baseBean.getService()){
 			case BaseKey.SERVICE_APP://app
 				AppBean appBean = gson.fromJson(json,AppBean.class);
@@ -144,19 +156,19 @@ public class JsonParser {
 			case BaseKey.SERVICE_BAIKE://百科
 				BaikeBean baikeBean = gson.fromJson(json,BaikeBean.class);
 				if(BaseKey.OPERATION_ANSWER.equals(baseBean.getOperation())){
-
+					return baikeBean.getAnswer().getText();
 				}
 				break;
 			case BaseKey.SERVICE_CALC://計算
                 CalcBean calcBean = gson.fromJson(json,CalcBean.class);
                 if(BaseKey.OPERATION_ANSWER.equals(baseBean.getOperation())){
-
+					return calcBean.getAnswer().getText();
                 }
 				break;
 			case BaseKey.SERVICE_CHAT://閒聊
                 ChatBean chatBean = gson.fromJson(json,ChatBean.class);
                 if(BaseKey.OPERATION_ANSWER.equals(baseBean.getOperation())){
-
+					return chatBean.getAnswer().getText();
                 }
 				break;
 			case BaseKey.SERVICE_COOKBOOK://菜譜
@@ -168,13 +180,13 @@ public class JsonParser {
 			case BaseKey.SERVICE_DATETIME:
                 DateTimeBean dateTimeBean = gson.fromJson(json, DateTimeBean.class);
                 if(BaseKey.OPERATION_ANSWER.equals(baseBean.getOperation())){
-
+					return dateTimeBean.getAnswer().getText();
                 }
 				break;
 			case BaseKey.SERVICE_FAQ:
                 FAQBean faqBean = gson.fromJson(json,FAQBean.class);
                 if(BaseKey.OPERATION_ANSWER.equals(baseBean.getOperation())){
-
+					return faqBean.getAnswer().getText();
                 }
 				break;
 			case BaseKey.SERVICE_FLIGHT:
@@ -226,7 +238,7 @@ public class JsonParser {
 			case BaseKey.SERVICE_OPEN_QA://情绪问答,问候
 				OpenQABean openQABean = gson.fromJson(json,OpenQABean.class);
 				if(BaseKey.OPERATION_ANSWER.equals(baseBean.getOperation())){
-
+					return openQABean.getAnswer().getText();
 				}
 				break;
 			case BaseKey.SERVICE_PM25:
@@ -242,16 +254,28 @@ public class JsonParser {
 				}
 				break;
 			case BaseKey.SERVICE_RESTAURANT:
+				RestaurantBean restaurantBean = gson.fromJson(json,RestaurantBean.class);
+				if(BaseKey.OPERATION_QUERY.equals(baseBean.getOperation())){
 
+				}
 				break;
 			case BaseKey.SERVICE_SCHEDULE:
+				ScheduleBean scheduleBean = gson.fromJson(json,ScheduleBean.class);
+				if(BaseKey.OPERATION_CREATE.equals(baseBean.getOperation())){
 
+				}
 				break;
 			case BaseKey.SERVICE_SHORTRENT:
+				ShortRentBean shortRentBean = gson.fromJson(json,ShortRentBean.class);
+				if(BaseKey.OPERATION_QUERY.equals(baseBean.getOperation())){
 
+				}
 				break;
 			case BaseKey.SERVICE_STOCK:
+				StockBean stockBean = gson.fromJson(json,StockBean.class);
+				if(BaseKey.OPERATION_QUERY.equals(baseBean.getOperation())){
 
+				}
 				break;
 			case BaseKey.SERVICE_TELEPHONE:
 				TelephoneBean telephoneBean = gson.fromJson(json,TelephoneBean.class);
@@ -260,19 +284,35 @@ public class JsonParser {
 				}
 				break;
 			case BaseKey.SERVICE_TRAIN:
+				TrainBean trainBean = gson.fromJson(json,TrainBean.class);
+				if(BaseKey.OPERATION_QUERY.equals(baseBean.getOperation())){
 
+				}
 				break;
 			case BaseKey.SERVICE_TRANSLATION:
+				TranslationBean translationBean = gson.fromJson(json,TranslationBean.class);
+				if(BaseKey.OPERATION_TRANSLATION.equals(baseBean.getOperation())){
 
+				}
 				break;
 			case BaseKey.SERVICE_TV:
+				TVBean tvBean = gson.fromJson(json,TVBean.class);
+				if(BaseKey.OPERATION_QUERY_TV.equals(baseBean.getOperation())){
 
+				}else if(BaseKey.OPERATION_QUERY_PROGRAM.equals(baseBean.getOperation())){
+
+				}
 				break;
 			case BaseKey.SERVICE_TV_CONTROL:
 
 				break;
 			case BaseKey.SERVICE_VIDEO:
+				VideoBean videoBean = gson.fromJson(json,VideoBean.class);
+				if(BaseKey.OPERATION_QUERY.equals(baseBean.getOperation())){
 
+				}else if(BaseKey.OPERATION_PLAY.equals(baseBean.getOperation())){
+
+				}
 				break;
 			case BaseKey.SERVICE_WEATHER:
 				WeatherBean weatherBean = gson.fromJson(json,WeatherBean.class);
@@ -281,15 +321,26 @@ public class JsonParser {
 				}
 				break;
 			case BaseKey.SERVICE_WEBSEARCH:
+				WebSearchBean webSearchBean = gson.fromJson(json,WebSearchBean.class);
+				if(BaseKey.OPERATION_QUERY.equals(baseBean.getOperation())){
 
+				}
 				break;
 			case BaseKey.SERVICE_WEBSITE:
+				WebSiteBean webSiteBean = gson.fromJson(json,WebSiteBean.class);
+				if(BaseKey.OPERATION_OPEN.equals(baseBean.getOperation())){
 
+				}
 				break;
 			case BaseKey.SERVICE_WEIBO:
+				WeiboBean weiboBean = gson.fromJson(json,WeiboBean.class);
+				if(BaseKey.OPERATION_VIEW.equals(baseBean.getOperation())){
 
+				}else if(BaseKey.OPERATION_PUBLISH.equals(baseBean.getOperation())){
+
+				}
 				break;
 		}
-
+		return result;
 	}
 }

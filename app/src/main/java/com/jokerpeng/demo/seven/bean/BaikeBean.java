@@ -17,7 +17,7 @@ public class BaikeBean extends BaseBean {
         this.answer = answer;
     }
 
-    class Answer{
+    public class Answer{
         private String text;
         private String type;
 

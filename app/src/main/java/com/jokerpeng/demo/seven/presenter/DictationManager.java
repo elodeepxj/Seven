@@ -1,9 +1,11 @@
 package com.jokerpeng.demo.seven.presenter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.iflytek.cloud.RecognizerListener;
 import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
@@ -35,38 +37,31 @@ public class DictationManager {
         init(context);
     }
 
-    public void init(Context context){
+    private void init(Context context){
         mSpeechRecognizer = SpeechRecognizer.createRecognizer(context, null);
         mRecognizerDialog = new RecognizerDialog(context,null);
         mResult = new LinkedHashMap<>();
     }
-
-    public void voiceToText(final DictationListener listener){
+    private void initData(){
+//        FlowerCollector.onEvent(mContext,"iat_recognize");
+        mResult.clear();
+        setParameter();
+    }
+    /**
+     * 语音转文字显示UI
+     * */
+    public void voiceToTextShowUI(final DictationListener listener){
         if(null ==mSpeechRecognizer ){
             listener.initFail();
             return;
         }
-        FlowerCollector.onEvent(mContext,"iat_recognize");
-        mResult.clear();
+        initData();
         mRecognizerDialog.setListener(new RecognizerDialogListener() {
             @Override
             public void onResult(RecognizerResult recognizerResult, boolean b) {
                 if(null != recognizerResult){
                     if(!TextUtils.isEmpty(recognizerResult.getResultString())){
-                        String text = JsonParser.parseIatResult(recognizerResult.getResultString());
-                        String sn = null;
-                        try {
-                            JSONObject jsonObject = new JSONObject(recognizerResult.getResultString());
-                            sn = jsonObject.optString("sn");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        mResult.put(sn,text);
-                        mResultBuffer = new StringBuffer();
-                        for (String key : mResult.keySet()) {
-                            mResultBuffer.append(mResult.get(key));
-                        }
-                        listener.success(mResultBuffer.toString());
+                        listener.success(parseRecognizerResult(recognizerResult.getResultString()));
                     }else{
                         listener.empty();
                     }
@@ -81,6 +76,75 @@ public class DictationManager {
             }
         });
         mRecognizerDialog.show();
+    }
+    /**
+     * 语音转文字不显示UI
+     * */
+    public void VoiceToText(final DictationListener listener){
+        if(null ==mSpeechRecognizer ){
+            listener.initFail();
+            return;
+        }
+        initData();
+        mSpeechRecognizer.startListening(new RecognizerListener() {
+            @Override
+            public void onVolumeChanged(int i, byte[] bytes) {
+
+            }
+
+            @Override
+            public void onBeginOfSpeech() {
+
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+
+            }
+
+            @Override
+            public void onResult(RecognizerResult recognizerResult, boolean b) {
+                if(null != recognizerResult){
+                    if(!TextUtils.isEmpty(recognizerResult.getResultString())){
+                        listener.success(parseRecognizerResult(recognizerResult.getResultString()));
+                    }else {
+                        listener.empty();
+                    }
+                }else {
+                    listener.empty();
+                }
+
+            }
+
+            @Override
+            public void onError(SpeechError speechError) {
+                listener.error(speechError.getPlainDescription(true));
+            }
+
+            @Override
+            public void onEvent(int i, int i1, int i2, Bundle bundle) {
+
+            }
+        });
+    }
+    /*
+    * 转换结果解析
+    * */
+    private String parseRecognizerResult(String recognizerResult){
+        String text = JsonParser.parseIatResult(recognizerResult);
+        String sn = null;
+        try {
+            JSONObject jsonObject = new JSONObject(recognizerResult);
+            sn = jsonObject.optString("sn");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mResult.put(sn,text);
+        mResultBuffer = new StringBuffer();
+        for (String key : mResult.keySet()) {
+            mResultBuffer.append(mResult.get(key));
+        }
+        return mResultBuffer.toString();
     }
 
     /*

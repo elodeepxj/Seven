@@ -11,6 +11,7 @@ import com.iflytek.cloud.SpeechUnderstander;
 import com.iflytek.cloud.SpeechUnderstanderListener;
 import com.iflytek.cloud.TextUnderstander;
 import com.iflytek.cloud.UnderstanderResult;
+import com.jokerpeng.demo.seven.utils.JsonParser;
 
 /**
  * Created by ${PengXiaoJie} on 2017/5/19.10 57..
@@ -93,6 +94,7 @@ public class UnderstanderManager {
             voiceUnderstanderListener.initFail();
             return;
         }
+        setParameter();
         int i = speechUnderstander.startUnderstanding(new SpeechUnderstanderListener() {
             @Override
             public void onVolumeChanged(int i, byte[] bytes) {
@@ -113,7 +115,8 @@ public class UnderstanderManager {
             public void onResult(UnderstanderResult understanderResult) {
                 if(null != understanderResult){
                     if(!TextUtils.isEmpty(understanderResult.getResultString())){//内容不为空
-                        voiceUnderstanderListener.success(understanderResult.getResultString());
+                        String str = JsonParser.parseUnderstanderResult(understanderResult.getResultString());
+                        voiceUnderstanderListener.success(str);
                     }else{
                         voiceUnderstanderListener.empty();
                     }
